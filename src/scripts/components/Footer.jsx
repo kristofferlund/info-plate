@@ -45,11 +45,11 @@ class Footer extends Component {
 				storage.getItem('selectedTheme');
 				this.props.switchTheme(storage.selectedTheme);
 			} else {
-				this.props.switchTheme('winter');
+				this.props.switchTheme('default');
 			}
 		} else {
 			console.warn('Session storage was not available');
-			this.props.switchTheme('winter');
+			this.props.switchTheme('default');
 		}
 	}
 
@@ -57,8 +57,8 @@ class Footer extends Component {
 		return (
 			<div className="footer-content">
 				<div className="themes">
-					<span className="theme-button" id="theme-winter" onClick={() => this.themeClicked('default')}>Winter</span>
-					<span className="theme-button" id="theme-summer" onClick={() => this.themeClicked('mirror')}>Summer</span>
+					<span className="theme-button" id="theme-default" onClick={() => this.themeClicked('default')}>W/B</span>
+					<span className="theme-button" id="theme-mirror" onClick={() => this.themeClicked('mirror')}>B/W</span>
 				</div>
 				<div className="social-medias">
 					{/* You can map within the html to easier render lists */}

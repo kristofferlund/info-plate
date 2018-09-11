@@ -11,12 +11,12 @@ describe('<Footer />', () => {
 	it('renders without crashing', () => {
 		expect(wrapper).toBeDefined();
 	});
-	it('initiates with winter theme', () => {
-		expect(Store.getState().switchTheme.selectedTheme).toBe('winter');
+	it('initiates with default theme', () => {
+		expect(Store.getState().switchTheme.selectedTheme).toBe('default');
 	});
 	it('can change theme', () => {
-		const summerButton = wrapper.find('#theme-summer');
+		const summerButton = wrapper.find('#theme-mirror');
 		summerButton.simulate('click');
-		expect(Store.getState().switchTheme.selectedTheme).toBe('summer');
+		expect(Store.getState().switchTheme.selectedTheme).toBe('mirror');
 	});
 });
