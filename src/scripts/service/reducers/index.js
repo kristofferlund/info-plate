@@ -1,10 +1,10 @@
-import weather from './weather';
+import weatherData from './weatherData';
 import switchTheme from './switchTheme';
 
 // Collection of all reducers
 const reducer = {
 	switchTheme,
-	weather,
+	weatherData,
 };
 
 export default reducer;

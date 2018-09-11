@@ -6,6 +6,7 @@ import {
 import {
 	RECEIVE_WEATHER,
 	REQUEST_WEATHER,
+	START_WEATHER_STREAM,
 } from '../constants';
 
 /** *********************************************************** */
@@ -38,7 +39,23 @@ function* fetchWeather() {
 			});
 		}
 	} catch (err) {
-		console.warn('Saga failed with response: ', err);
+		console.warn('Saga failed fetching weather with response: ', err);
+	}
+}
+
+function* fetchWeatherOnInterval() {
+	try {
+		const response = yield call(setInterval, () => {
+			callWeatherApi();
+		}, 1800000); // Update weather each half an hour
+		if (response.data) {
+			yield put({
+				type: RECEIVE_WEATHER,
+				response,
+			});
+		}
+	} catch (err) {
+		console.warn('Saga failed to update weather on interval with response: ', err);
 	}
 }
 
@@ -50,12 +67,17 @@ function* fetchWeather() {
   Read more about this here: https://redux-saga.js.org/docs/api/
 */
 
+function* startWeatherSubscription() {
+	yield takeLatest(START_WEATHER_STREAM, fetchWeatherOnInterval);
+}
+
 function* watchWeatherRequest() {
 	yield takeLatest(REQUEST_WEATHER, fetchWeather);
 }
 
 export default function* rootSaga() {
 	yield all([
+		fork(startWeatherSubscription),
 		fork(watchWeatherRequest),
 	]);
 }

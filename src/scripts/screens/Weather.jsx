@@ -1,7 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+	faAdjust, // find another icon
+	faBolt,
+	faCloud,
+	faSnowflake,
+	faSun,
+	faTint,
+	faUmbrella,
+} from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
-import { requestWeather } from '../service/actions';
+import {
+	requestWeather,
+	startWeatherStream,
+} from '../service/actions';
+
+const weatherGroup = {
+	Thunderstorm: faBolt,
+	Drizzle: faTint,
+	Rain: faUmbrella,
+	Snow: faSnowflake,
+	Atmosphere: faAdjust,
+	Clear: faSun,
+	Clouds: faCloud,
+};
 
 class Weather extends Component {
 	constructor(props) {
@@ -12,6 +35,7 @@ class Weather extends Component {
 
 	componentDidMount() {
 		this.updateCurrentWeather();
+		this.props.startWeatherStream();
 	}
 
 	render() {
@@ -22,7 +46,11 @@ class Weather extends Component {
 					<span>loading</span> :
 					<span>{this.props.currentWeather.data ?
 						<div className="flex-column">
-							{this.props.currentWeather.data.name}
+							<span>{this.props.currentWeather.data.name}</span>
+							<span>
+								<FontAwesomeIcon icon={weatherGroup[this.props.currentWeather.data.weatherData.main]} />
+							</span>
+							<span>{this.props.currentWeather.data.weatherData.description}</span>
 						</div>
 						: ''}
 					</span>
@@ -31,7 +59,7 @@ class Weather extends Component {
 		);
 	}
 
-	updateCurrentWeather() { // eslint-disable-line
+	updateCurrentWeather() {
 		this.props.requestWeather();
 	}
 }
@@ -39,14 +67,16 @@ class Weather extends Component {
 Weather.propTypes = {
 	currentWeather: PropTypes.object,
 	requestWeather: PropTypes.func,
+	startWeatherStream: PropTypes.func, // eslint-disable-line
 };
 
 const mapStateToProps = state => ({
-	currentWeather: state.weather.currentWeather,
+	currentWeather: state.weatherData.currentWeather,
 });
 
 const mapDispatchToProps = dispatch => ({
 	requestWeather: payload => dispatch(requestWeather(payload)),
+	startWeatherStream: () => dispatch(startWeatherStream()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps, null)(Weather);

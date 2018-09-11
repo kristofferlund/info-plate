@@ -5,7 +5,7 @@ import {
 
 const initialState = {
 	currentWeather: {
-		data: {},
+		data: null,
 		loading: false,
 	},
 };
@@ -23,9 +23,13 @@ export default function reducer(state = initialState, action) {
 	case RECEIVE_WEATHER:
 		// If you are using an API you are not able to change,
 		// you can format the responses to fit your needs here
+		console.log('response:', action.response);
 		return Object.assign({}, state, {
 			currentWeather: {
-				data: action.response,
+				data: {
+					weatherData: action.response.weather[0],
+					name: action.response.name,
+				},
 				loading: false,
 			},
 		});
