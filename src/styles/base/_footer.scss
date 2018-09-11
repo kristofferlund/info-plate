@@ -1,0 +1,44 @@
+.app-footer {
+  @include shadow-up(false);
+  color: $black;
+  display: flex;
+  height: 3em;
+  z-index: 2;
+
+  &.default {
+    background: $white;
+  }
+
+  &.mirror {
+    background: #000;
+    color: $white;
+  }
+
+  .footer-content {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 1em;
+    width: 100%;
+
+    .themes {
+      .theme-button {
+        cursor: pointer;
+        margin-right: 1em;
+      }
+    }
+
+    .social-medias {
+      display: flex;
+    }
+  }
+
+  .social-icon {
+    color: $black;
+    cursor: pointer;
+    display: flex;
+    fill: $black;
+    margin-left: 1em
+  }
+}
