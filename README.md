@@ -2,7 +2,7 @@
 
 ## Info plate
 
-Just a little experimental webapp to fetch some data and display it on a device in my home. 
+Just a little experimental webapp to fetch some data and display it on a device in my home.
 
 ### Deployment
 ```
