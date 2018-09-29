@@ -5,4 +5,3 @@ export { default as Home } from './Home';
 export { default as PageNotFound } from './PageNotFound';
 export { default as Routes } from './Routes';
 export { default as Shows } from './Shows';
-export { default as Weather } from './Weather';
