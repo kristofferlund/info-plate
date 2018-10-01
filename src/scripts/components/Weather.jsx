@@ -41,7 +41,6 @@ class Weather extends Component {
 	render() {
 		return (
 			<div className="flex-column">
-				<span>Weather</span>
 				{this.props.currentWeather.loading ?
 					<span>loading</span> :
 					<span>{this.props.currentWeather.data ?
@@ -50,7 +49,7 @@ class Weather extends Component {
 							<span>
 								<FontAwesomeIcon icon={weatherGroup[this.props.currentWeather.data.weatherData.main]} />
 							</span>
-							<span>{this.props.currentWeather.data.weatherData.description}</span>
+							<i>{this.props.currentWeather.data.weatherData.description}</i>
 						</div>
 						: ''}
 					</span>
