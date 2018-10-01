@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Weather } from './index';
+import {
+	BigWatch,
+	Weather,
+} from '../components/index';
 
 class Home extends Component {
 	constructor(props) {
@@ -10,6 +13,7 @@ class Home extends Component {
 	render() {
 		return (
 			<div className="content-wrapper">
+				<BigWatch />
 				<Weather />
 			</div>
 		);
