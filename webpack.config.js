@@ -47,6 +47,9 @@ module.exports = {
 			},
 		],
 	},
+	externals: [{
+		xmlhttprequest: '{XMLHttpRequest:XMLHttpRequest}',
+	}],
 	plugins: [
 		new webpack.optimize.UglifyJsPlugin(),
 		new HtmlWebpackPlugin({ template: './src/index.html' }),
