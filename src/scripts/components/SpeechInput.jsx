@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import XMLHttpRequest from 'xmlhttprequest';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMicrophoneAlt } from '@fortawesome/free-solid-svg-icons';
+import { setVoiceCommand } from '../service/actions';
 
 class SpeechInput extends Component {
 	constructor(props) {
@@ -127,6 +128,8 @@ class SpeechInput extends Component {
 			});
 			console.log('Transcribed message: ', transcribed);
 
+			this.props.setVoiceCommand(transcribed);
+
 			if (transcribed === 'finish voice command') {
 				this.finishRecognition();
 			}
@@ -138,7 +141,7 @@ class SpeechInput extends Component {
 	}
 
 	finishRecognition() {
-		console.log('Voice command ended');
+		console.log('Microphone is no longer listening');
 		this.recognition.onend = null;
 		this.recognition.onresult = null;
 		this.recognition.stop();
@@ -165,6 +168,7 @@ SpeechInput.propTypes = {
 	data: PropTypes.object,
 	dataPath: PropTypes.string,
 	onTranscription: PropTypes.func,
+	setVoiceCommand: PropTypes.func,
 	textUnsupported: PropTypes.string,
 	wrapTokens: PropTypes.string,
 	wrapUnknown: PropTypes.string,
@@ -178,6 +182,8 @@ SpeechInput.defaultProps = {
 
 const mapStateToProps = state => ({}); // eslint-disable-line
 
-const mapDispatchToProps = dispatch => ({}); // eslint-disable-line
+const mapDispatchToProps = dispatch => ({
+	setVoiceCommand: string => dispatch(setVoiceCommand(string)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps, null)(SpeechInput);

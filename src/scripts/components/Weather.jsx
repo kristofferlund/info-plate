@@ -38,6 +38,14 @@ class Weather extends Component {
 		this.props.startWeatherStream();
 	}
 
+	componentWillReceiveProps(nextProps) {
+		console.log('next props: ', nextProps);
+		if (nextProps.latestVoiceCommand === 'update weather') {
+			console.log('updating weather');
+			this.updateCurrentWeather();
+		}
+	}
+
 	render() {
 		return (
 			<div className="flex-column">
@@ -65,12 +73,14 @@ class Weather extends Component {
 
 Weather.propTypes = {
 	currentWeather: PropTypes.object,
+	latestVoiceCommand: PropTypes.string,
 	requestWeather: PropTypes.func,
 	startWeatherStream: PropTypes.func, // eslint-disable-line
 };
 
 const mapStateToProps = state => ({
 	currentWeather: state.weatherData.currentWeather,
+	latestVoiceCommand: state.latestVoiceCommand,
 });
 
 const mapDispatchToProps = dispatch => ({
