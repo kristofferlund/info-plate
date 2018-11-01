@@ -14,6 +14,7 @@ class SpeechInput extends Component {
 			compatible = false;
 			console.info(this.props.textUnsupported);
 		}
+		this.testFunction = this.testFunction.bind(this);
 		this.transcribe = this.transcribe.bind(this);
 		this.processRecognition = this.processRecognition.bind(this);
 		this.setupRecognition = this.setupRecognition.bind(this);
@@ -51,7 +52,7 @@ class SpeechInput extends Component {
 		return (
 			<div className="flex-column align-center">
 				{this.state.compatible ? '' : this.props.textUnsupported}
-				<button onClick={() => this.beginRecognition()}>
+				<button onClick={() => this.testFunction()}>
 					<FontAwesomeIcon icon={faMicrophoneAlt} />
 				</button>
 			</div>
@@ -138,6 +139,10 @@ class SpeechInput extends Component {
 				this.props.onTranscription.call(null, recognized, transcribed);
 			}
 		}
+	}
+
+	testFunction() {
+		this.props.setVoiceCommand('update weather');
 	}
 
 	finishRecognition() {
