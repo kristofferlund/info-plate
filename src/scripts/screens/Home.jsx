@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
 	BigWatch,
+	SpeechInput,
 	Weather,
 } from '../components/index';
 
@@ -15,6 +16,7 @@ class Home extends Component {
 			<div className="content-wrapper">
 				<BigWatch />
 				<Weather />
+				<SpeechInput />
 			</div>
 		);
 	}
