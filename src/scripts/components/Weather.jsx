@@ -29,33 +29,37 @@ const weatherGroup = {
 class Weather extends Component {
 	constructor(props) {
 		super(props);
-		this.updateCurrentWeather = this.updateCurrentWeather.bind(this);
+		this.getNewWeatherData = this.getNewWeatherData.bind(this);
 		this.state = {
 			prevLatestVoiceCommand: null, // eslint-disable-line
+			weatherGroup: null,
 		};
 	}
 
-	static getDerivedStateFromProps(nextProps) {
+	static getDerivedStateFromProps(nextProps, prevState) {
 		if (nextProps.latestVoiceCommand.command === 'update weather') {
 			return {
 				prevLatestVoiceCommand: nextProps.latestVoiceCommand,
+			};
+		}
+		if (nextProps.currentWeather.data && (nextProps.currentWeather.data.weatherData.main !== prevState.weatherGroup)) {
+			return {
+				weatherGroup: nextProps.currentWeather.data.weatherData.main,
 			};
 		}
 		return null;
 	}
 
 	componentDidMount() {
-		this.updateCurrentWeather();
+		this.getNewWeatherData();
 		this.props.startWeatherStream();
 	}
 
 	componentDidUpdate(prevProps) {
 		const pingLimit = 60 * 1000;
 		if (this.props.latestVoiceCommand === 'update weather') {
-			console.log('Latest voice command is correct');
 			if ((this.props.latestVoiceCommand.time - prevProps.latestVoiceCommand.time) > pingLimit) {
-				console.log('component did update and will once again');
-				this.updateCurrentWeather();
+				this.getNewWeatherData();
 			}
 			console.warn('Fetching weather data has a cooldown');
 		}
@@ -81,7 +85,7 @@ class Weather extends Component {
 		);
 	}
 
-	updateCurrentWeather() {
+	getNewWeatherData() {
 		this.props.requestWeather();
 	}
 }
@@ -93,7 +97,7 @@ Weather.propTypes = {
 		time: PropTypes.instanceOf(Date),
 	}),
 	requestWeather: PropTypes.func,
-	startWeatherStream: PropTypes.func, // eslint-disable-line
+	startWeatherStream: PropTypes.func,
 };
 
 const mapStateToProps = state => ({

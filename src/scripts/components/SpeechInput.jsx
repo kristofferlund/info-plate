@@ -38,7 +38,7 @@ class SpeechInput extends Component {
 						if (xhr.status === 200) {
 							this.wordTranscriptions = JSON.parse(xhr.responseText);
 						} else {
-							console.log('error');
+							console.warn('error');
 						}
 					}
 				};
@@ -52,7 +52,7 @@ class SpeechInput extends Component {
 		return (
 			<div className="flex-column align-center">
 				{this.state.compatible ? '' : this.props.textUnsupported}
-				<button onClick={() => this.testFunction()}>
+				<button onClick={() => this.beginRecognition()}>
 					<FontAwesomeIcon icon={faMicrophoneAlt} />
 				</button>
 			</div>
@@ -97,7 +97,6 @@ class SpeechInput extends Component {
 			}
 
 			// wrap known tokens
-			// console.log('do we wrap', transcribed, this.props.wrapTokens);
 			if (transcribed && this.props.wrapTokens) {
 				console.log('wrapping tokens', transcribed, this.props.wrapTokens);
 				transcribed = this.props.wrapTokens.replace('%s', transcribed);
@@ -141,8 +140,10 @@ class SpeechInput extends Component {
 		}
 	}
 
-	testFunction() {
-		this.props.setVoiceCommand('update weather');
+	testFunction(command) {
+		// Use this to parse commands where you are not able to speak
+		// (It looks stupid to talk to your computer at an airport)
+		this.props.setVoiceCommand(command);
 	}
 
 	finishRecognition() {
