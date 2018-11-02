@@ -52,7 +52,7 @@ class SpeechInput extends Component {
 		return (
 			<div className="flex-column align-center">
 				{this.state.compatible ? '' : this.props.textUnsupported}
-				<button onClick={() => this.beginRecognition()}>
+				<button onClick={() => this.testFunction('update weather')}>
 					<FontAwesomeIcon icon={faMicrophoneAlt} />
 				</button>
 			</div>

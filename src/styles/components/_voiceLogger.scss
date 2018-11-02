@@ -1,0 +1,39 @@
+$voice-logger-width: 16rem;
+
+.voice-logger-container {
+  background: $grey;
+  bottom: 20%;
+  height: 30%;
+  position: fixed;
+  transition: right .2s ease-out;
+  width: $voice-logger-width;
+
+  &.open {
+    @include shadow-down(true);
+    right: 0;
+  }
+
+  &.closed {
+    right: -$voice-logger-width;
+  }
+
+  .toggle-open {
+    background: $black;
+    color: $white;
+    height: 2rem;
+    left: -2rem;
+    position: absolute;
+    width: 2rem;
+  }
+
+  .inner-container {
+    height: 100%;
+    padding: 0 1rem 1rem 1rem;
+
+    .log-window {
+      background: $white;
+      flex: 1;
+      overflow-y: scroll;
+    }
+  }
+}
