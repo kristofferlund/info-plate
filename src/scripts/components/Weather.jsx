@@ -41,7 +41,8 @@ class Weather extends Component {
 
 	static getDerivedStateFromProps(nextProps, prevState) {
 		if (nextProps.latestVoiceCommand.command === 'update weather' && nextProps.latestVoiceCommand.time > prevState.latestVoiceCommand.time) {
-			const pingLimit = 5000;
+			// Prevents excessive fetching
+			const pingLimit = 10 * 1000;
 			if (!prevState.latestVoiceCommand.time || (new Date() - prevState.latestVoiceCommand.time) > pingLimit) {
 				return {
 					latestVoiceCommand: nextProps.latestVoiceCommand,
