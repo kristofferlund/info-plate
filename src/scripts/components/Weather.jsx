@@ -31,16 +31,25 @@ class Weather extends Component {
 		super(props);
 		this.getNewWeatherData = this.getNewWeatherData.bind(this);
 		this.state = {
-			prevLatestVoiceCommand: null, // eslint-disable-line
+			latestVoiceCommand: {
+				command: '',
+				time: null,
+			},
 			weatherGroup: null,
 		};
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
-		if (nextProps.latestVoiceCommand.command === 'update weather') {
-			return {
-				prevLatestVoiceCommand: nextProps.latestVoiceCommand,
-			};
+		if (nextProps.latestVoiceCommand.command === 'update weather' && nextProps.latestVoiceCommand.time > prevState.latestVoiceCommand.time) {
+			// Prevents excessive fetching
+			const pingLimit = 10 * 1000;
+			if (!prevState.latestVoiceCommand.time || (new Date() - prevState.latestVoiceCommand.time) > pingLimit) {
+				return {
+					latestVoiceCommand: nextProps.latestVoiceCommand,
+				};
+			}
+			console.warn('Weather fetching needs to cool down');
+			return null;
 		}
 		if (nextProps.currentWeather.data && (nextProps.currentWeather.data.weatherData.main !== prevState.weatherGroup)) {
 			return {
@@ -55,13 +64,9 @@ class Weather extends Component {
 		this.props.startWeatherStream();
 	}
 
-	componentDidUpdate(prevProps) {
-		const pingLimit = 60 * 1000;
-		if (this.props.latestVoiceCommand === 'update weather') {
-			if ((this.props.latestVoiceCommand.time - prevProps.latestVoiceCommand.time) > pingLimit) {
-				this.getNewWeatherData();
-			}
-			console.warn('Fetching weather data has a cooldown');
+	componentDidUpdate(prevProps, prevState) {
+		if ((this.state.latestVoiceCommand.command === 'update weather') && this.state.latestVoiceCommand !== prevState.latestVoiceCommand) {
+			this.getNewWeatherData();
 		}
 	}
 
@@ -91,13 +96,16 @@ class Weather extends Component {
 }
 
 Weather.propTypes = {
-	currentWeather: PropTypes.object,
+	currentWeather: PropTypes.shape({
+		data: PropTypes.object,
+		loading: PropTypes.bool,
+	}),
 	latestVoiceCommand: PropTypes.shape({
 		command: PropTypes.string,
 		time: PropTypes.instanceOf(Date),
 	}),
 	requestWeather: PropTypes.func,
-	startWeatherStream: PropTypes.func,
+	startWeatherStream: PropTypes.func, // eslint-disable-line
 };
 
 const mapStateToProps = state => ({
