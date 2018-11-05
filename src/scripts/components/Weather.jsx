@@ -40,14 +40,14 @@ class Weather extends Component {
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
-		if (nextProps.latestVoiceCommand.command === 'update weather') {
+		if (nextProps.latestVoiceCommand.command === 'update weather' && nextProps.latestVoiceCommand.time > prevState.latestVoiceCommand.time) {
 			const pingLimit = 5000;
 			if (!prevState.latestVoiceCommand.time || (new Date() - prevState.latestVoiceCommand.time) > pingLimit) {
 				return {
 					latestVoiceCommand: nextProps.latestVoiceCommand,
 				};
 			}
-			console.warn('Stop spamming!');
+			console.warn('Weather fetching needs to cool down');
 			return null;
 		}
 		if (nextProps.currentWeather.data && (nextProps.currentWeather.data.weatherData.main !== prevState.weatherGroup)) {
@@ -95,7 +95,10 @@ class Weather extends Component {
 }
 
 Weather.propTypes = {
-	currentWeather: PropTypes.object,
+	currentWeather: PropTypes.shape({
+		data: PropTypes.object,
+		loading: PropTypes.bool,
+	}),
 	latestVoiceCommand: PropTypes.shape({
 		command: PropTypes.string,
 		time: PropTypes.instanceOf(Date),
