@@ -34,6 +34,7 @@
     "path": "^0.12.7",
     "react-addons-test-utils": "^15.6.2",
     "react-scripts": "1.1.1",
+    "react-test-renderer": "^16.6.0",
     "regenerator-runtime": "^0.12.1",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.20.3",
