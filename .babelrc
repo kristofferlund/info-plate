@@ -2,8 +2,17 @@
   "presets": ["@babel/preset-env", "@babel/react"],
   "env": {
     "test": {
-      "presets": ["@babel/preset-env", "@babel/react"],
-      "plugins": ["transform-es2015-modules-commonjs"]
+      "presets": [
+        ["@babel/preset-env", {
+          "debug": false,
+          "targets": {
+            "browsers": [
+              "last 3 versions"
+            ]
+          }
+        }],
+        "@babel/react"],
+      "plugins": ["@babel/plugin-transform-modules-commonjs"]
     }
   }
 }
