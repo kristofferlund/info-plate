@@ -1,36 +1,27 @@
-/* eslint-disable */
 import React from 'react';
-import { mount } from 'enzyme';
-import { BrowserRouter as Router } from 'react-router-dom';
-import renderer from 'react-test-renderer';
+import { shallow } from 'enzyme';
 import BigWatch from '../../components/BigWatch';
-import Store from '../../store';
-import timer from '../fakeTimer';
-
-jest.useFakeTimers();
-
-const tick = jest.fn(() => new Date());
 
 describe('<BigWatch />', () => {
-	const wrapper = mount(<Router><BigWatch store={Store}/></Router>);
+	let wrapper;
 	it('renders without crashing', () => {
+		wrapper = shallow(<BigWatch />);
 		expect(wrapper).toBeDefined();
 	});
-	it('runs an interval', () => {
+	it('runs an interval on mount', () => {
+		jest.useFakeTimers();
+		wrapper = shallow(<BigWatch />);
 		expect(setInterval).toHaveBeenCalledTimes(1);
 	});
+	it('clears interval on unmount', () => {
+		jest.useFakeTimers();
+		wrapper = shallow(<BigWatch />);
+		wrapper.unmount();
+		expect(clearInterval.mock.calls.length).toEqual(1);
+	});
+	it('updates state every second', () => {
+		jest.useFakeTimers();
+		wrapper = shallow(<BigWatch />);
+		// TODO: Finish this
+	})
 });
-
-test('renders with a set date in state', () => {
-	const component = renderer.create(<BigWatch />);
-	const date = new Date();
-	const instance = component.getInstance();
-	expect(instance.state.date).toBe(`${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`)
-});
-
-// test('Updates each second', () => {
-// 	timer();
-//
-// 	expect(setInterval).toHaveBeenCalledTimes(1);
-// 	expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), 1000)
-// });

@@ -1,14 +1,8 @@
-/* eslint-disable */
 import React from 'react';
 import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import Footer from '../../components/Footer';
 import Store from '../../store'
-import renderer from "react-test-renderer";
-import { shallow } from 'enzyme';
-
-// API: http://jestjs.io/docs/en/api
-
-const switchTheme = jest.fn(theme => theme);
 
 describe('<Footer />', () => {
 	const wrapper = mount(<Footer store={Store}/>);
